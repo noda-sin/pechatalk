@@ -1,0 +1,5 @@
+faster_whisper
+pyaudio
+webrtcvad
+simpleaudio
+requests
