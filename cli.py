@@ -22,7 +22,7 @@ messages = [
     {"role": "assistant", "content": "了解しました。"}
 ]
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="")
 
 import re
 
