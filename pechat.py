@@ -1,3 +1,5 @@
+import queue
+
 from ear import Ear
 from brain import Brain
 from recognizer import recognizer
@@ -14,11 +16,31 @@ class Pechat:
         self.brain = Brain(openai_api_key)
         self.mouth = mouth(mouth_type)
 
+        self.messages = []
+        self.is_speaking = False
+
     def __process(self, text):
-        logger.info(f"user: {text}")
-        reply = self.brain.reply(text=text)
-        logger.info(f"pechat: {reply}")
-        self.mouth.speak(reply)
+        self.messages.append(text)
+        if self.is_speaking:
+            return
+
+        self.is_speaking = True
+        messages = self.messages
+        self.messages = []
+
+        if len(messages) == 0:
+            return
+
+        message = " ".join(messages)
+
+        try:
+            logger.info(f"user: {message}")
+            reply = self.brain.reply(text=message)
+            logger.info(f"pechat: {reply}")
+            self.mouth.speak(reply)
+        finally:
+            self.is_speaking = False
+
 
     def start(self):
         logger.info("Starting...")

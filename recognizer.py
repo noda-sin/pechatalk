@@ -17,7 +17,7 @@ class Recognizer(metaclass=abc.ABCMeta):
 
 class ReazonSpeechRecognizer(Recognizer):
     def __init__(self, device=("cuda" if torch.cuda.is_available() else "cpu")) -> None:
-        logger.info(f"recognizer device: {device}")
+        logger.info(f"Recognizer device: {device}")
         self.model = load_model(device=device)
 
     def recognize(self, audio_data, samplerate) -> str:
