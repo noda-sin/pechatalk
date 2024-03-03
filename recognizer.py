@@ -17,6 +17,7 @@ class Recognizer(metaclass=abc.ABCMeta):
 
 class ReazonSpeechRecognizer(Recognizer):
     def __init__(self, device=("cuda" if torch.cuda.is_available() else "cpu")) -> None:
+        logger.info(f"recognizer device: {device}")
         self.model = load_model(device=device)
 
     def recognize(self, audio_data, samplerate) -> str:
@@ -31,6 +32,8 @@ class FasterWhisperRecognizer(Recognizer):
         device=("cuda" if torch.cuda.is_available() else "cpu"),
         model_root="~/.cache/whisper",
     ) -> None:
+        logger.info(f"Recognizer device: {device}")
+
         from faster_whisper import WhisperModel
 
         model_root = os.path.expanduser(model_root)
@@ -47,7 +50,7 @@ class FasterWhisperRecognizer(Recognizer):
 
 
 def recognizer(type: str) -> Recognizer:
-    logger.info(f"recognizer: {type}")
+    logger.info(f"Recognizer: {type}")
 
     if type == "reazon_speech":
         return ReazonSpeechRecognizer()

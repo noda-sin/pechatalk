@@ -1,5 +1,3 @@
-import os
-
 from ear import Ear
 from brain import Brain
 from recognizer import recognizer
@@ -11,9 +9,9 @@ logger = get_logger(__name__)
 
 
 class Pechat:
-    def __init__(self, recognize_type: str, mouth_type: str) -> None:
+    def __init__(self, openai_api_key: str, recognize_type: str, mouth_type: str) -> None:
         self.ear = Ear(recognaizer=recognizer(recognize_type))
-        self.brain = Brain(os.environ.get("OPENAI_API_KEY"))
+        self.brain = Brain(openai_api_key)
         self.mouth = mouth(mouth_type)
 
     def __process(self, text):

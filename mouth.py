@@ -46,7 +46,7 @@ class PrinterMouth(Mouth):
 
 
 def mouth(type: str) -> Mouth:
-    logger.info(f"mouth: {type}")
+    logger.info(f"Mouth: {type}")
     if type == "voicevox":
         return VoicevoxMouth()
     if type == "printer":

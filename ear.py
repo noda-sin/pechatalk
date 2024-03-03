@@ -86,7 +86,7 @@ class Ear:
 
 
 def listen_audio(text):
-    print(f"listen: {text}")
+    print(f"Listen: {text}")
 
 
 if __name__ == "__main__":
