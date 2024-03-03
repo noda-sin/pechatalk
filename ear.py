@@ -13,9 +13,9 @@ def to_nparray(data):
     return np.frombuffer(data, np.int16).flatten().astype(np.float32) / 32768.0
 
 
-class Mic:
+class Ear:
     def __init__(self, recognaizer: Recognizer, samplerate=16000):
-        self.logger = get_logger("Mic", "info")
+        self.logger = get_logger("Ear", "info")
 
         self.samplerate = samplerate
         self.source = sr.Microphone(sample_rate=samplerate)
@@ -97,5 +97,5 @@ def listen_audio(text):
 
 if __name__ == "__main__":
     recognizer = ReazonSpeechRecognizer()
-    mic = Mic(recognaizer=recognizer)
+    mic = Ear(recognaizer=recognizer)
     mic.listen(listen_audio)

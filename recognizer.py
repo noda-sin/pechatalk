@@ -5,6 +5,7 @@ import torch
 from reazonspeech.nemo.asr import load_model, transcribe, audio_from_numpy
 from util import get_logger
 
+
 class Recognizer(metaclass=abc.ABCMeta):
     @abc.abstractclassmethod
     def recognize(self, audio_data, samplerate) -> str:
@@ -39,3 +40,11 @@ class FasterWhisperRecognizer(Recognizer):
         for segment in segments:
             predicted_text += segment.text
         return predicted_text
+
+
+def recognizer(type: str) -> Recognizer:
+    if type == "reazon_speech":
+        return ReazonSpeechRecognizer()
+    if type == "faster_wisper":
+        return FasterWhisperRecognizer()
+    raise NotImplementedError()
