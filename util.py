@@ -2,7 +2,8 @@ import logging
 from typing_extensions import Literal
 from rich.logging import RichHandler
 
-def get_logger(name: str, level: Literal["info", "warning", "debug"]) -> logging.Logger:
+
+def get_logger(name: str, level: Literal["info", "warning", "debug"] = "info") -> logging.Logger:
     rich_handler = RichHandler(level=logging.INFO, rich_tracebacks=True, markup=True)
 
     logger = logging.getLogger(name)

@@ -4,6 +4,7 @@ import click
 
 from pechat import Pechat
 
+
 @click.command()
 @click.option("--recognizer", default="reazon_speech", type=str)
 @click.option("--mouth", default="printer", type=str)
