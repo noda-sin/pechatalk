@@ -6,18 +6,26 @@ import numpy as np
 import speech_recognition as sr
 
 from util import get_logger
+from recognizer import Recognizer, ReazonSpeechRecognizer
+
+
+def to_nparray(data):
+    return np.frombuffer(data, np.int16).flatten().astype(np.float32) / 32768.0
 
 
 class Mic:
-    def __init__(self):
-        self.logger = get_logger("mic", "info")
+    def __init__(self, recognaizer: Recognizer, samplerate=16000):
+        self.logger = get_logger("Mic", "info")
 
-        self.source = sr.Microphone(sample_rate=16000)
+        self.samplerate = samplerate
+        self.source = sr.Microphone(sample_rate=samplerate)
         self.recorder = sr.Recognizer()
         self.recorder.energy_threshold = 300
         self.recorder.phrase_threshold = 2
         self.recorder.dynamic_energy_threshold = False
         self.hallucinate_threshold = 300
+
+        self.recognizer = recognaizer
 
         with self.source:
             self.recorder.adjust_for_ambient_noise(self.source)
@@ -43,7 +51,7 @@ class Mic:
                 audio += self.audio_queue.get()
                 got_audio = True
 
-        data = sr.AudioData(audio, 16000, 2)
+        data = sr.AudioData(audio, self.samplerate, 2)
         data = data.get_raw_data()
         return data
 
@@ -58,7 +66,8 @@ class Mic:
         audio_data = self.__get_all_audio()
         if not self.__is_audio_loud_enough(audio_data):
             return
-        self.result_queue.put_nowait(audio_data)
+        ret = self.recognizer.recognize(to_nparray(audio_data), self.samplerate)
+        self.result_queue.put_nowait(ret)
 
 
     def __transcribe_loop(self):
@@ -82,10 +91,11 @@ class Mic:
               callback(result)  
 
 
-def listen_audio(audio_data):
-    print('recieve audio')
+def listen_audio(text):
+    print(f"listen: {text}")
 
 
 if __name__ == "__main__":
-    mic = Mic()
+    recognizer = ReazonSpeechRecognizer()
+    mic = Mic(recognaizer=recognizer)
     mic.listen(listen_audio)

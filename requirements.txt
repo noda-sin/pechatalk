@@ -4,3 +4,9 @@ webrtcvad
 simpleaudio
 requests
 SpeechRecognition
+Cython
+ffmpeg
+datasets
+soundfile
+librosa
+torch
