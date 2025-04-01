@@ -2,7 +2,6 @@ import abc
 import os
 
 import torch
-from reazonspeech.nemo.asr import load_model, transcribe, audio_from_numpy
 from util import get_logger
 
 
@@ -13,17 +12,6 @@ class Recognizer(metaclass=abc.ABCMeta):
     @abc.abstractclassmethod
     def recognize(self, audio_data, samplerate) -> str:
         raise NotImplementedError()
-
-
-class ReazonSpeechRecognizer(Recognizer):
-    def __init__(self, device=("cuda" if torch.cuda.is_available() else "cpu")) -> None:
-        logger.info(f"Recognizer device: {device}")
-        self.model = load_model(device=device)
-
-    def recognize(self, audio_data, samplerate) -> str:
-        audio = audio_from_numpy(audio_data, samplerate)
-        return transcribe(self.model, audio).text
-
 
 class FasterWhisperRecognizer(Recognizer):
     def __init__(
@@ -52,8 +40,6 @@ class FasterWhisperRecognizer(Recognizer):
 def recognizer(type: str) -> Recognizer:
     logger.info(f"Recognizer: {type}")
 
-    if type == "reazon_speech":
-        return ReazonSpeechRecognizer()
     if type == "faster_wisper":
         return FasterWhisperRecognizer()
     raise NotImplementedError()

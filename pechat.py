@@ -1,5 +1,3 @@
-import queue
-
 from ear import Ear
 from brain import Brain
 from recognizer import recognizer

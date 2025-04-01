@@ -6,7 +6,7 @@ import numpy as np
 import speech_recognition as sr
 
 from util import get_logger
-from recognizer import Recognizer, ReazonSpeechRecognizer
+from recognizer import Recognizer
 
 
 logger = get_logger(__name__)
