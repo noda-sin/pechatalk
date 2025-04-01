@@ -2,8 +2,12 @@
 
 import os
 import click
+from dotenv import load_dotenv
 
 from pechat import Pechat
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 @click.command()
